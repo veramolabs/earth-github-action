@@ -11,10 +11,17 @@ async function run(): Promise<void> {
       provider: 'did:web'
     })
 
-    core.debug('context')
-    core.debug(JSON.stringify(context, null, 2))
+    const vc = await agent.createVerifiableCredential({
+      credential: {
+        issuer: {id: bot.did},
+        type: ['VerifiableCredential', 'GitHubEvent'],
+        credentialSubject: context.payload
+      },
+      proofFormat: 'jwt',
+      save: true
+    })
 
-    core.setOutput('did', bot.did)
+    core.setOutput('vc', vc.proof.jwt)
   } catch (error) {
     core.setFailed(error.message)
   }
