@@ -1,5 +1,6 @@
-name: 'build-test'
+name: 'build'
 on: # rebuild any PRs and main branch changes
+  issue_comment:
   pull_request:
   push:
     branches:
@@ -15,13 +16,3 @@ jobs:
           npm install
       - run: |
           npm run all
-  test: # make sure the action works on a clean machine without building
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v2
-      - uses: ./
-        with:
-          milliseconds: 1000
-          agent_url: ${{secrets.AGENT_URL}}
-          agent_token: ${{secrets.AGENT_TOKEN}}
-          bot_alias: ${{secrets.BOT_ALIAS}}

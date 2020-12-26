@@ -26,6 +26,7 @@
   "license": "MIT",
   "dependencies": {
     "@actions/core": "^1.2.6",
+    "@actions/github": "^4.0.0",
     "@veramo/core": "^1.0.1",
     "@veramo/credential-w3c": "^1.0.1",
     "@veramo/remote-client": "^1.0.1"
