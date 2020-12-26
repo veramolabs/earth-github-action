@@ -1,6 +1,10 @@
 name: 'record'
 
-on: [ issue_comment ]
+on:
+  issues:
+    types: [opened, edited, milestoned]
+  issue_comment:
+    types: [created, deleted]
 
 jobs:
   record: # make sure the action works on a clean machine without building

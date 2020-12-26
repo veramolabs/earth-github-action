@@ -1,6 +1,5 @@
 name: 'build'
 on: # rebuild any PRs and main branch changes
-  issue_comment:
   pull_request:
   push:
     branches:
