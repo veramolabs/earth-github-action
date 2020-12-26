@@ -1,16 +1,20 @@
+
 import * as core from '@actions/core'
-import {wait} from './wait'
+import github from '@actions/github';
+import {agent} from './agent'
+const context = github.context;
 
 async function run(): Promise<void> {
   try {
-    const ms: string = core.getInput('milliseconds')
-    core.debug(`Waiting ${ms} milliseconds ...`) // debug is only output if you set the secret `ACTIONS_RUNNER_DEBUG` to true
+    const bot = await agent.didManagerGetOrCreate({
+      alias: core.getInput('bot_alias'),
+      provider: 'did:web'
+    })
 
-    core.debug(new Date().toTimeString())
-    await wait(parseInt(ms, 10))
-    core.debug(new Date().toTimeString())
+    core.debug('context')
+    core.debug(JSON.stringify(context, null, 2))
 
-    core.setOutput('time', new Date().toTimeString())
+    core.setOutput('did', bot.did)
   } catch (error) {
     core.setFailed(error.message)
   }
