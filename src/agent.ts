@@ -7,7 +7,10 @@ export const agent = createAgent<IDIDManager & ICredentialIssuer>({
   plugins: [
     new AgentRestClient({
       url: core.getInput('agent_url'),
-      enabledMethods: ['didManagerGetOrCreate', 'createVerifiableCredential']
+      enabledMethods: ['didManagerGetOrCreate', 'createVerifiableCredential'],
+      headers: {
+        Authorization: `Bearer ${core.getInput('agent_token')}`
+      }
     })
   ]
 })

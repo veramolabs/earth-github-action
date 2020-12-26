@@ -23,3 +23,5 @@ jobs:
         with:
           milliseconds: 1000
           agent_url: ${{secrets.AGENT_URL}}
+          agent_token: ${{secrets.AGENT_TOKEN}}
+          bot_alias: ${{secrets.BOT_ALIAS}}

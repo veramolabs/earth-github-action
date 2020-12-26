@@ -8,6 +8,10 @@ inputs:
     default: 'default value if applicable'
   agent_url:
     required: true
+  agent_token:
+    required: true
+  bot_alias:
+    required: true
 runs:
   using: 'node12'
   main: 'dist/index.js'
