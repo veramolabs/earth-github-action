@@ -1,8 +1,7 @@
-
 import * as core from '@actions/core'
-import github from '@actions/github';
+import github from '@actions/github'
 import {agent} from './agent'
-const context = github.context;
+const context = github.context
 
 async function run(): Promise<void> {
   try {
@@ -10,6 +9,9 @@ async function run(): Promise<void> {
       alias: core.getInput('bot_alias'),
       provider: 'did:web'
     })
+
+    core.debug('CONTEXT')
+    core.debug(JSON.stringify(context, null, 2))
 
     const vc = await agent.createVerifiableCredential({
       credential: {
