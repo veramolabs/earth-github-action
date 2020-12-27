@@ -5,16 +5,32 @@ const context = github.context
 
 async function run(): Promise<void> {
   try {
-    const bot = await agent.didManagerGetOrCreate({
+    const actor = await agent.didManagerGetOrCreate({
       alias: `${core.getInput('bot_alias')}:${context.actor}`,
       provider: 'did:web'
     })
 
+    let id: string | undefined
+    switch (context.eventName) {
+      case 'issue_comment':
+        id = context.payload.comment?.html_url
+        break
+      case 'issues':
+        id = context.payload.issue?.html_url
+        break
+      default:
+        //FIXME
+        id = actor.did
+    }
+
     const vc = await agent.createVerifiableCredential({
       credential: {
-        issuer: {id: bot.did},
+        issuer: {id: actor.did},
         type: ['VerifiableCredential', 'GitHubEvent', context.eventName],
-        credentialSubject: context.payload
+        credentialSubject: {
+          id,
+          ...context.payload
+        }
       },
       proofFormat: 'jwt',
       save: true

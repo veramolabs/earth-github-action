@@ -93,17 +93,30 @@ const github = __importStar(__webpack_require__(5438));
 const agent_1 = __webpack_require__(3279);
 const context = github.context;
 function run() {
+    var _a, _b;
     return __awaiter(this, void 0, void 0, function* () {
         try {
-            const bot = yield agent_1.agent.didManagerGetOrCreate({
+            const actor = yield agent_1.agent.didManagerGetOrCreate({
                 alias: `${core.getInput('bot_alias')}:${context.actor}`,
                 provider: 'did:web'
             });
+            let id;
+            switch (context.eventName) {
+                case 'issue_comment':
+                    id = (_a = context.payload.comment) === null || _a === void 0 ? void 0 : _a.html_url;
+                    break;
+                case 'issues':
+                    id = (_b = context.payload.issue) === null || _b === void 0 ? void 0 : _b.html_url;
+                    break;
+                default:
+                    //FIXME
+                    id = actor.did;
+            }
             const vc = yield agent_1.agent.createVerifiableCredential({
                 credential: {
-                    issuer: { id: bot.did },
+                    issuer: { id: actor.did },
                     type: ['VerifiableCredential', 'GitHubEvent', context.eventName],
-                    credentialSubject: context.payload
+                    credentialSubject: Object.assign({ id }, context.payload)
                 },
                 proofFormat: 'jwt',
                 save: true
